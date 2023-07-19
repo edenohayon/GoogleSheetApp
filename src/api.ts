@@ -1,7 +1,8 @@
 import axios from 'axios';
 import googleSheetsConfig from './googleSheetsConfig';
+import { User } from './types';
 
-export const fetchData = async () => {
+export const getUsers = async ():Promise<User[]> => {
     try {
         const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${googleSheetsConfig.spreadsheetId}/values/${googleSheetsConfig.sheetName}?range=A2:C&valueRenderOption=FORMATTED_VALUE&majorDimension=ROWS&key=${googleSheetsConfig.apiKey}`);
         console.log('response.data.results.length', response.data.values.length)

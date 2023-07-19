@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { fetchData } from '../api'; // Import the fetchData function
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  ListRenderItem,
+} from 'react-native';
+import {getUsers} from '../api'; // Import the fetchData function
+import {User} from '../types';
 
 const ListScreen = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     fetchDataFromAPI();
@@ -12,8 +20,8 @@ const ListScreen = () => {
 
   const fetchDataFromAPI = async () => {
     try {
-      const responseData = await fetchData();
-      setData(responseData);
+      const responseData = await getUsers();
+      setUsers(responseData);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -21,25 +29,27 @@ const ListScreen = () => {
     }
   };
 
-  const renderItem = ({ item }) => {
-    console.log('item', JSON.stringify(item, null, 2))
-    return (
-      <View style={styles.itemContainer}>
-        <Text style={{color:'black'}}>{item.name}</Text>
-      </View>
-    );
-  };
+  const renderItem: ListRenderItem<User> = ({item: user}) => (
+    <View style={styles.itemContainer}>
+      <Text style={{color: 'black'}}>
+        {user.name} {user.age}
+      </Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
+        <>
         <FlatList
-          data={data}
+          data={users}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id} // Assuming there's an "id" field in the data
+          keyExtractor={item => item.id}
         />
+
+</>
       )}
     </View>
   );
@@ -48,7 +58,6 @@ const ListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
- 
   },
   itemContainer: {
     padding: 16,
