@@ -8,11 +8,11 @@ interface Props {
   updateStatus: string;
 }
 const UpdateUserView = ({updateRandomUserAge, updateStatus}: Props) => {
-  const isUpdating = updateStatus.length > 0
+  const isUpdating = updateStatus.length > 0;
   return (
     <View>
       <Button
-      disabled={isUpdating}
+        disabled={isUpdating}
         title="Click to update Random user age"
         onPress={updateRandomUserAge}
       />
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
   },
   updateStatusText: {
     color: updateStatusColor,
-    paddingStart:5
+    paddingStart: 5,
   },
 });
