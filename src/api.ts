@@ -1,17 +1,27 @@
 import axios from 'axios';
-import googleSheetsConfig from './googleSheetsConfig';
 import { User } from './types';
 
-export const getUsers = async ():Promise<User[]> => {
+const api = 'https://script.google.com/macros/s/AKfycbyYgZ3_AYt_qmyKAtT1X-08aMLBjAzhaADjKeEhUjSEI15vwjcDIPRecnbVK6PKscfppA/exec'
+
+export const getUsersRequest = async (): Promise<User[]> => {
     try {
-        const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${googleSheetsConfig.spreadsheetId}/values/${googleSheetsConfig.sheetName}?range=A2:C&valueRenderOption=FORMATTED_VALUE&majorDimension=ROWS&key=${googleSheetsConfig.apiKey}`);
-        console.log('response.data.results.length', response.data.values.length)
-        return response.data.values
-        .map(
-            (item: [string, string, string]) =>
-                ({ id: item[0], name: item[1], age: item[2] }))
+        const response = await axios.get(api);
+        return response.data.names
+
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
     }
 };
+
+export const updateUserAgeByIdRequest = async (id: string, age: string): Promise<User[]> => {
+    try {
+        const response = await axios.get(`${api}?update=true&id=${id}&data=${age}`);
+        return response.data.names
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+
+}

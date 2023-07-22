@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ListRenderItem,
 } from 'react-native';
-import {getUsers} from '../api'; // Import the fetchData function
+import {getUsersRequest} from '../api'; // Import the fetchData function
 import {User} from '../types';
 
 const ListScreen = () => {
@@ -20,7 +20,7 @@ const ListScreen = () => {
 
   const fetchDataFromAPI = async () => {
     try {
-      const responseData = await getUsers();
+      const responseData = await getUsersRequest();
       setUsers(responseData);
       setLoading(false);
     } catch (error) {
