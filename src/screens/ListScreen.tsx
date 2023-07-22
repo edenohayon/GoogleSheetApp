@@ -20,10 +20,10 @@ const ListScreen = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
-    fetchDataFromAPI();
+    fetchUsers();
   }, []);
 
-  const fetchDataFromAPI = async () => {
+  const fetchUsers = async () => {
     try {
       const responseData = await getUsersRequest();
       setUsers(responseData);
@@ -78,6 +78,7 @@ const ListScreen = () => {
               data={users}
               renderItem={renderItem}
               keyExtractor={item => item.id}
+              contentContainerStyle={styles.listContentContainer}
             />
           </View>
         )}
@@ -95,6 +96,9 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
+  },
+  listContentContainer: {
+    paddingBottom: 50, 
   },
 });
 
