@@ -8,13 +8,15 @@ interface Props {
   updateStatus: string;
 }
 const UpdateUserView = ({updateRandomUserAge, updateStatus}: Props) => {
+  const isUpdating = updateStatus.length > 0
   return (
     <View>
       <Button
+      disabled={isUpdating}
         title="Click to update Random user age"
         onPress={updateRandomUserAge}
       />
-      {updateStatus.length > 0 && (
+      {isUpdating && (
         <View style={styles.updateStatusContainer}>
           <ActivityIndicator size={'small'} color={updateStatusColor} />
           <Text style={styles.updateStatusText}>{updateStatus}</Text>
