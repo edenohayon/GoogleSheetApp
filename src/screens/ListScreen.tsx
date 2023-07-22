@@ -6,13 +6,16 @@ import {
   ActivityIndicator,
   StyleSheet,
   ListRenderItem,
+  SafeAreaView,
 } from 'react-native';
 import {getUsersRequest} from '../api'; // Import the fetchData function
 import {User} from '../types';
+import ErrorModal from '../components/ErrorModal';
 
 const ListScreen = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
     fetchDataFromAPI();
@@ -25,7 +28,7 @@ const ListScreen = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      // Handle error, e.g., show an error message
+      setShowErrorModal(true);
     }
   };
 
@@ -38,20 +41,22 @@ const ListScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <>
-        <FlatList
-          data={users}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-
-</>
-      )}
-    </View>
+    <>
+      <SafeAreaView style={styles.container}>
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <View>
+            <FlatList
+              data={users}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+            />
+          </View>
+        )}
+      </SafeAreaView>
+      <ErrorModal visible={showErrorModal} />
+    </>
   );
 };
 
